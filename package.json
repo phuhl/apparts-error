@@ -1,0 +1,20 @@
+{
+  "name": "apparts-error",
+  "version": "1.0.0",
+  "description": "HttpError Object and some helper functions for handling Errors in a Http environment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@ph-uhl.com:Apparts/apparts-error.git"
+  },
+  "keywords": [
+    "http",
+    "error",
+    "apparts"
+  ],
+  "author": "Philipp Uhl",
+  "license": "UNLICENSED"
+}
