@@ -1,6 +1,6 @@
 "use strict";
 
-const { HttpError } = require('./http.js');
+const { HttpError } = require('./httpError.js');
 
 /**
  * Returns what it was given in to, if the given exception is of the
