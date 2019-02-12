@@ -3,6 +3,7 @@
 class HttpError {
   constructor(code, message) {
     this.code = code;
+    this.type = 'HttpError';
     if(message){
       this.message = message;
     } else {
