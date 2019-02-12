@@ -12,7 +12,7 @@ const { HttpError } = require('./httpError.js');
  * @throws {Exception} as given
  */
 const exceptionTo = (type, exception, to) => {
-  if(exception instanceof type){
+  if(exception.constructor.name === type.name){
     return to;
   } else {
     throw exception;
@@ -28,7 +28,7 @@ const exceptionTo = (type, exception, to) => {
  * @throws {Exception} as given
  */
 const catchException = (type, exception, next) => {
-  if(exception instanceof type){
+  if(exception.constructor.name === type.name){
     next && next();
   } else {
     throw exception;
