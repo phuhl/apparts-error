@@ -1,0 +1,45 @@
+#+TITLE: @apparts/errors
+#+DATE: [2021-02-11 Thu]
+#+AUTHOR: Philipp Uhl
+
+An error-element used together with [[https://github.com/phuhl/apparts-types][@apparts/types]]. When returned or
+thrown within a function that is given to the preparator function (or
+prepauth, etc.), it will produce the corresponding HTTP error.
+
+With the =fromThrows= helper function, you can remove nasty =try {} catch(e) {}=
+phrases that should return a value and normally require a
+non constant variable.
+
+* Usage
+
+#+BEGIN_SRC js
+  const { HttpError, fromThrows } = require("@apparts/error");
+
+  // within @apparts/types preperator function:
+  preperator({}, async () => {
+    const somethingWrong = "blub";
+    if(somethingWrong) {
+      return new HttpError(400, "You specified that parameter wrong",
+                           "Some dynamic info: " + somethingWrong);
+      // --> http-statuscode 400, body: { error: "You specified that parameter wrong",
+      //                                  description: "Some dynamic info: blub" }
+    }
+    throw new HttpError(412, "Want to throw");  // --> http-statuscode 412, body: { error: "Want to throw" }
+
+    return HttpError.notFound("My element"); // --> http-statuscode 404, body: { error: "My element not found" }
+
+    if (!allowed) {
+      return new HttpError(403); // --> http-statuscode 403, body: { error: "Forbidden" }
+    }
+
+
+    const data = fromThrows(() => JSON.parse("ha, you cant parse this!"),
+                            SyntaxError,
+                            e => new HttpError(400, "The data you send could net be parsed", e));
+    // If function throws SyntaxError, error will be re-thrown as 400-HttpError.
+    // If function throws different error, that error will be re-thrown (should give
+    // thanks to you a 500 server error thanks to preperator).
+    // If function returns normally, it's result is returned by fromThrows.
+
+  });
+#+END_SRC

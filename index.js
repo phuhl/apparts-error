@@ -1,6 +1,6 @@
 "use strict";
 
-const { HttpError } = require('./httpError.js');
+const { HttpError } = require("./httpError.js");
 
 /**
  * Returns what it was given in to, if the given exception is of the
@@ -12,7 +12,7 @@ const { HttpError } = require('./httpError.js');
  * @throws {Exception} as given
  */
 const exceptionTo = (type, exception, to) => {
-  if(exception.constructor.name === type.name){
+  if (exception.constructor.name === type.name) {
     return to;
   } else {
     throw exception;
@@ -28,11 +28,23 @@ const exceptionTo = (type, exception, to) => {
  * @throws {Exception} as given
  */
 const catchException = (type, exception, next) => {
-  if(exception.constructor.name === type.name){
+  if (exception.constructor.name === type.name) {
     next && next();
   } else {
     throw exception;
   }
 };
 
-module.exports = { exceptionTo, catchException, HttpError };
+const fromThrows = async (fun, exceptionType, exceptionReplacement) => {
+  try {
+    return await fun();
+  } catch (e) {
+    if (e instanceof exceptionType) {
+      throw exceptionReplacement(e);
+    } else {
+      throw e;
+    }
+  }
+};
+
+module.exports = { exceptionTo, catchException, fromThrows, HttpError };
